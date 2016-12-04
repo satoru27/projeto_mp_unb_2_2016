@@ -64,9 +64,18 @@ public:
 
 };
 
-static Transacao *matriz_transacoes[MAX_USUARIOS][MAX_USUARIOS];
+void adiciona_transacao(Transacao *tran);
+
+static std::vector<Transacao> lista_transacoes[MAX_USUARIOS];
 static Usuario *lista_usuarios[MAX_USUARIOS];
 static bool amizades[MAX_USUARIOS][MAX_USUARIOS];
 
 
 //////////////FUNCOES
+
+void inicializa_usuarios();
+void inicializa_amizades();
+float media_avaliacoes(int userId);
+
+
+

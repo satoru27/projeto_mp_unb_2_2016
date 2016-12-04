@@ -115,7 +115,8 @@ void Usuario::set_cep(std::string novo_cep)
 //////////////INICIO_TRANSACOES
 Transacao::Transacao(int idc, int idv, int nota): id1(idc), id2(idv),avaliacao(nota)
 {
-	std::cout << "Transacao adicionada"<< std::endl;
+	std::cout << "Transacao criada"<< std::endl;
+	adiciona_transacao(this);
 }
 
 Transacao::~Transacao()
@@ -138,14 +139,17 @@ int  Transacao::get_id1() {
 int  Transacao::get_id2() {
 	return id2;
 }
-void inicializa_transacoes() {
-	for (int i = 0; i < MAX_USUARIOS; i++) {
-		for (int j = 0; j < MAX_USUARIOS; j++) {
-			matriz_transacoes[i][j] = nullptr;
-		}
-	}
+
+
+//FUNCOES TRANSACAO
+void adiciona_transacao(Transacao *tran) {
+	int id1 = tran->get_id1;
+	int id2 = tran->get_id2;
+	lista_transacoes[id1].push_back(*tran);
+	lista_transacoes[id2].push_back(*tran);
 }
 
+//INICIALIZACOES
 void inicializa_usuarios() {
 	for (int i = 0; i < MAX_USUARIOS; i++) {
 		lista_usuarios[i] = nullptr;
@@ -159,3 +163,17 @@ void inicializa_amizades() {
 		}
 	}
 }
+
+float media_avaliacoes(int userId)
+{
+	float resultado = 0;
+	for (int i = 0; i < lista_transacoes[userId].size(); i++) {
+		resultado = lista_transacoes[userId][i].get_avaliacao();
+	}
+	if (lista_transacoes[userId].size() > 0) {
+		resultado = resultado / lista_transacoes[userId].size();
+	}
+	return resultado;
+}
+
+
