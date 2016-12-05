@@ -1,24 +1,43 @@
+#include "usuario.h"
+#include <iostream>
 #include <vector>
 #include <string>
-#include <iostream>
-#include "usuario.h"
-
+#include <algorithm>
 static int nextId = 0;
 
 
-Usuario::Usuario(int nIdade, int nId, char nGenero, std::string nNome, std::vector<int> nInteresses, std::string nCEP)
-	:idade(nIdade), id(nId),genero(nGenero), nome(nNome),interesses(nInteresses), CEP(nCEP)
+///////////////USUARIO
+int novo_id() {
+	int nId = 0;
+	if (lista_usuarios[0] == nullptr) {
+		nId = 0;
+	}
+	else {
+		for (int i = 0; i < MAX_USUARIOS - 1; i++) {
+
+			if (lista_usuarios[i] != nullptr && lista_usuarios[i + 1] == nullptr) {
+				nId = i + 1;
+				break;
+			}
+		}
+	}
+	return nId;
+}
+
+Usuario::Usuario(int nIdade, char nGenero, std::string nNome, std::vector<int> nInteresses, std::string nCEP, int nEscolariadade)
+	:idade(nIdade), genero(nGenero), nome(nNome), interesses(nInteresses), CEP(nCEP), escolaridade(nEscolariadade)
 {
-	std::cout << "Usuario [" + std::to_string(this->id) + "] criado" << std::endl;
+	id = novo_id();
+	std::cout << "Usuario [" + std::to_string(id) + "] criado" << std::endl;
 }
 
 Usuario::~Usuario() {
 	std::cout << "Usuario apagado" << std::endl;
 }
 
-void Usuario::bakuhatsu()
+void Usuario::novos_interesses(std::vector<int> nInteresses)
 {
-	delete this;
+	this->interesses = nInteresses;
 }
 
 void Usuario::add_interesse(int nInteresse)
@@ -40,10 +59,91 @@ void Usuario::delete_interesse(int nInteresse)
 	}
 }
 
-void Usuario::print_dados()
+void Usuario::bakuhatsu()
 {
-	std::cout << "Usuario: " << this->nome << " id[" << this->id << "]" << std::endl;
+	delete this;
 }
+
+// Getters
+int Usuario::get_idade()
+{
+	return this->idade;
+}
+
+int Usuario::get_id()
+{
+	return this->id;
+}
+
+char Usuario::get_genero()
+{
+	return this->genero;
+}
+
+int Usuario::get_escolaridade()
+{
+	return this->escolaridade;
+}
+
+std::string Usuario::get_nome()
+{
+	return this->nome;
+}
+
+std::vector<int> Usuario::get_interesses()
+{
+	return this->interesses;
+}
+
+std::string Usuario::get_CEP()
+{
+	return this->CEP;
+}
+
+
+// Setters
+void Usuario::set_idade(int nova_idade)
+{
+	this->idade = nova_idade;
+}
+
+void Usuario::set_genero(char novo_genero)
+{
+	this->genero = novo_genero;
+}
+
+void Usuario::set_escolaridade(int nova_escolaridade)
+{
+	this->escolaridade = nova_escolaridade;
+}
+
+void Usuario::set_nome(std::string novo_nome)
+{
+	this->nome = novo_nome;
+}
+
+void Usuario::set_cep(std::string novo_cep)
+{
+	this->CEP = novo_cep;
+}
+
+
+//INICIALIZACOES
+void inicializa_usuarios() {
+	for (int i = 0; i < MAX_USUARIOS; i++) {
+		lista_usuarios[i] = nullptr;
+	}
+}
+
+void inicializa_amizades() {
+	for (int i = 0; i < MAX_USUARIOS; i++) {
+		for (int j = 0; j < MAX_USUARIOS; j++) {
+			amizades[i][j] = false;
+		}
+	}
+}
+
+
 
 Usuario * retornaUsuario()
 {
@@ -87,7 +187,7 @@ bool eh_amigo_de_amigo(int id1, int id2)
 
 }
 
-Usuario * cria_usuario(int id)
+Usuario * cria_usuario()
 {	//Usuario(int nIdade, char nGenero, std::string nNome,
 	//std::vector<int> nInteresses, std::string nCEP);
 	std::cout << "# Bem vindo a criacao de um novo usuario da rede" << std::endl;
@@ -111,6 +211,7 @@ Usuario * cria_usuario(int id)
 	std::vector<int> nInteresses = pegaInteresses();
 
 	Usuario *novoUsuario = new Usuario(nIdade, nGenero, nNome, nInteresses, nCEP, nEscolaridade);
+	return novoUsuario;
 }
 
 std::string pegaNome()
@@ -295,62 +396,18 @@ void exclui_usuario(Usuario* usuario)
 		std::cout << "Retornando" << std::endl;
 }
 
-
-
-
-
-
-// Getters
-int Usuario::get_idade()
+void Usuario::print_dados()
 {
-	return this->idade;
+	std::cout << "Usuario: " << this->nome << " id[" << this->id << "]" << std::endl;
 }
 
-int Usuario::get_id()
+void Usuario::print_lista_usuarios()
 {
-	return this->id;
+	for(int i = 0; i < MAX_USUARIOS; i++)
+	{
+		if(lista_usuarios[i] != nullptr)
+		{
+			lista_usuarios[i]->print_dados();
+		}
+	}
 }
-
-char Usuario::get_genero()
-{
-	return this->genero;
-}
-
-std::string Usuario::get_nome()
-{
-	return this->nome;
-}
-
-std::vector<int> Usuario::get_interesses()
-{
-	return this->interesses;
-}
-
-std::string Usuario::get_CEP()
-{
-	return this->CEP;
-}
-
-
-// Setters
-void Usuario::set_idade(int nova_idade)
-{
-	this->idade = nova_idade;
-}
-
-void Usuario::set_genero(char novo_genero)
-{
-	this->genero = novo_genero;
-}
-
-void Usuario::set_nome(std::string novo_nome)
-{
-	this->nome = novo_nome;
-}
-
-void Usuario::set_cep(std::string novo_cep)
-{
-	this->CEP = novo_cep;
-}
-
-

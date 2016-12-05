@@ -1,9 +1,15 @@
+#pragma once
+#include <vector>
+#include <string>
+const int MAX_USUARIOS = 100;
+
 class Usuario
 {
 private:
 	int id;
 	int idade;
 	char genero;
+	int escolaridade;
 	std::string nome;
 	std::vector<int> interesses;
 	std::string CEP;
@@ -12,16 +18,20 @@ private:
 
 
 public:
-	Usuario(int nIdade, int nId, char nGenero, std::string nNome, std::vector<int> nInteresses, std::string nCEP);
+	Usuario(int nIdade, char nGenero, std::string nNome, std::vector<int> nInteresses, std::string nCEP, int nEscolaridade);
 	~Usuario();
 
 	// Getters
 	int get_idade();
 	int get_id();
 	char get_genero();
+	int get_escolaridade();
 	std::string get_nome();
 	std::vector<int> get_interesses();
 	std::string get_CEP();
+
+	void print_dados();
+	void print_lista_usuarios();
 
 	// Setters
 	void set_idade(int nova_idade);
@@ -30,15 +40,20 @@ public:
 	void set_nome(std::string novo_nome);
 	void set_cep(std::string novo_cep);
 
+	void novos_interesses(std::vector<int> nInteresses);
 	void add_interesse(int nInteresse);
 	void delete_interesse(int nInterese);
-	void novos_interesses(std::vector<int> nInteresses);
 
 	void bakuhatsu();
 
-	void print_dados();
-
 };
+
+static Usuario *lista_usuarios[MAX_USUARIOS];
+static bool amizades[MAX_USUARIOS][MAX_USUARIOS];
+
+//inicializadores
+void inicializa_usuarios();
+void inicializa_amizades();
 
 //funcoes
 Usuario* retornaUsuario();
