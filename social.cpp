@@ -52,6 +52,11 @@ void Usuario::delete_interesse(int nInteresse)
 	}
 }
 
+void Usuario::bakuhatsu()
+{
+	delete this;
+}
+
 // Getters
 int Usuario::get_idade()
 {
@@ -113,10 +118,9 @@ void Usuario::set_cep(std::string novo_cep)
 
 
 //////////////INICIO_TRANSACOES
-Transacao::Transacao(int idc, int idv, int nota): id1(idc), id2(idv),avaliacao(nota)
+Transacao::Transacao(int idc, int idv,int nTipo ,int nota): id1(idc), id2(idv),tipo(nTipo),avaliacao(nota)
 {
 	std::cout << "Transacao criada"<< std::endl;
-	adiciona_transacao(this);
 }
 
 Transacao::~Transacao()
@@ -140,6 +144,11 @@ int  Transacao::get_id2() {
 	return id2;
 }
 
+int Transacao::get_tipo()
+{
+	return tipo;
+}
+
 
 //FUNCOES TRANSACAO
 void adiciona_transacao(Transacao *tran) {
@@ -147,6 +156,11 @@ void adiciona_transacao(Transacao *tran) {
 	int id2 = tran->get_id2;
 	lista_transacoes[id1].push_back(*tran);
 	lista_transacoes[id2].push_back(*tran);
+}
+
+void cria_transacao(int id1, int id2,int tran,int avaliacao){
+	Transacao *nTransacao = new Transacao(id1, id2, tran, avaliacao);
+	adiciona_transacao(nTransacao);
 }
 
 //INICIALIZACOES
@@ -162,6 +176,26 @@ void inicializa_amizades() {
 			amizades[i][j] = false;
 		}
 	}
+}
+
+Usuario * retornaUsuario()
+{
+	Usuario * resultado = nullptr;
+	std::string nome;
+	std::cout << "# Digite o nome do usuario" << std::endl;
+	std::cout << ">> ";
+	std::cin >> nome;
+
+	for (int i = 0; i < MAX_USUARIOS; i++) {
+		std::string nome_rec = lista_usuarios[i]->get_nome();
+		if (nome.compare(nome_rec) == 0) {
+			resultado = lista_usuarios[i];
+		}
+	}
+	if (resultado == nullptr) {
+		std::cout << "[!] Usuario nao encontrado" << std::endl;
+	}
+	return resultado;
 }
 
 
@@ -198,4 +232,115 @@ bool eh_amigo_de_amigo(int id1, int id2)
 
 }
 
+Usuario * cria_usuario()
+{	//Usuario(int nIdade, char nGenero, std::string nNome,
+	//std::vector<int> nInteresses, std::string nCEP);
+	std::cout << "# Bem vindo a criacao de um novo usuario da rede" << std::endl;
+	
+	std::cout << "# Digite seu nome" << std::endl;
+	std::string nNome = pegaNome();
 
+	std::cout << "# Digite sua idade" << std::endl;
+	int nIdade = pegaIdade();
+
+	std::cout << "# Escolha seu nivel de escolariade" << std::endl;
+	int nEscolaridade = pegaEscolaridade();
+
+	std::cout << "# Escolha seu genero" << std::endl;
+	char nGenero = pegaGenero();
+
+	std::cout << "# Digite seu CEP" << std::endl;
+	std::string nCEP = pegaCEP();
+
+	std::cout << "# Escolha seus interesses" << std::endl;
+	std::vector<int> nInteresses = pegaInteresses();
+
+	Usuario *novoUsuario = new Usuario(nIdade,nGenero,nNome, nInteresses,nCEP);
+}
+
+void edita_usuario(Usuario* usuario)
+{
+	bool editar_mais = false;
+
+	int escolha = interfaceEdicao();
+
+	realizaEdicao(usuario,escolha);
+
+}
+
+void exclui_usuario(Usuario* usuario)
+{
+	std::cout << "# Usuario sera excluido, deseja continuar ?" << std::endl;
+	int escolha = 0;
+	std::cout << "[1] Sim" << std::endl;
+	std::cout << "[2] Nao" << std::endl;
+	std::cout << ">> ";
+	std::cin >> escolha;
+
+	if (escolha == 1) {
+		usuario->bakuhatsu();
+		std::cout << "Sucesso, retornando" << std::endl;
+	}
+	else
+		std::cout << "Retornando" << std::endl;
+}
+
+void solicita_transacao()
+{
+}
+
+void cadastraTransacao()
+{
+	std::cout << "# Informe o iD do comprador" << std::endl;
+	int id1 = 0;
+	std::cout << ">> ";
+	std::cin >> id1;
+
+	std::cout << "# Informe o iD do vendedor ou prestador do servico" << std::endl;
+	int id2 = 0;
+	std::cout << ">> ";
+	std::cin >> id2;
+
+	std::cout << "# Infrome qual foi o tipo da transacao" << std::endl;
+	int tran = 0;
+	std::cout << ">> ";
+	std::cin >> tran;
+
+	std::cout << "# Infrome qual foi a avaliacao da transacao" << std::endl;
+	int avaliacao = 0;
+	std::cout << ">> ";
+	std::cin >> avaliacao;
+
+	cria_transacao(id1,id2,tran,avaliacao);
+}
+
+void excluiTransacao()
+{
+	std::cout << "# Bem vindo a exclusao de transacao" << std::endl;
+	std::cout << "# Informe o iD do usuario" << std::endl;
+	std::cout << ">> ";
+	int id = 0;
+	std::cin >> id;
+	for (int i = lista_transacoes[id].size; i > -1; i--) {
+		mostraTransacao(id,i);
+		
+		std::cout << "# Deseja excluir essa transacao ?" << std::endl;
+
+		int escolha = 0;
+		std::cout << "[1] Sim" << std::endl;
+		std::cout << "[2] Nao" << std::endl;
+		std::cout << ">> ";
+		std::cin >> escolha;
+
+		if (escolha == 1) {
+			lista_transacoes[id].erase(lista_transacoes[id].begin() + (i-1));
+		}
+	}
+	
+}
+
+void mostraTransacao(int id, int posicao)
+{
+	std::cout << "Transacao entre " + std::to_string(lista_transacoes[id][posicao]->get_id1()) + " e " + std::to_string(lista_transacoes[id][posicao]->get_id2()) << std::endl;
+	std::cout << "Do tipo " + std::to_string(lista_transacoes[id][posicao]->get_tipo()) + "com avaliacao " + std::to_string(lista_transacoes[id][posicao]->get_avaliacao()) + << std::endl
+}
