@@ -164,6 +164,7 @@ void inicializa_amizades() {
 	}
 }
 
+
 float media_avaliacoes(int userId)
 {
 	float resultado = 0;
@@ -174,6 +175,27 @@ float media_avaliacoes(int userId)
 		resultado = resultado / lista_transacoes[userId].size();
 	}
 	return resultado;
+}
+
+bool sao_amigos(int id1, int id2)
+{
+	if (amizades[id1][id2] == true && amizades[id2][id1] == true) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+bool eh_amigo_de_amigo(int id1, int id2)
+{
+	for (int i = 0; i < MAX_USUARIOS; i++) {
+		if (sao_amigos(id1, i) && sao_amigos(id2, i)) {
+			return true;
+		}
+	}
+	return false;
+
 }
 
 

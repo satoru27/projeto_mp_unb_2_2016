@@ -75,7 +75,11 @@ static bool amizades[MAX_USUARIOS][MAX_USUARIOS];
 
 void inicializa_usuarios();
 void inicializa_amizades();
+
 float media_avaliacoes(int userId);
+
+bool sao_amigos(int id1, int id2);
+bool eh_amigo_de_amigo(int id1, int id2);
 
 
 
