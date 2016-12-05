@@ -1,8 +1,10 @@
-#include "social.h"
+#include "usuario.h"
 #include <iostream>
 #include <vector>
 #include <string>
 #include <algorithm>
+static int nextId = 0;
+
 
 ///////////////USUARIO
 int novo_id() {
@@ -23,7 +25,7 @@ int novo_id() {
 }
 
 Usuario::Usuario(int nIdade, char nGenero, std::string nNome, std::vector<int> nInteresses, std::string nCEP, int nEscolariadade)
-	:idade(nIdade), genero(nGenero), nome(nNome),interesses(nInteresses), CEP(nCEP), escolaridade(nEscolariadade)
+	:idade(nIdade), genero(nGenero), nome(nNome), interesses(nInteresses), CEP(nCEP), escolaridade(nEscolariadade)
 {
 	id = novo_id();
 	std::cout << "Usuario [" + std::to_string(id) + "] criado" << std::endl;
@@ -126,58 +128,6 @@ void Usuario::set_cep(std::string novo_cep)
 }
 
 
-
-
-
-//////////////FIM_USUARIO
-
-
-//////////////INICIO_TRANSACOES
-Transacao::Transacao(int idc, int idv,int nTipo ,int nota): id1(idc), id2(idv),tipo(nTipo),avaliacao(nota)
-{
-	std::cout << "Transacao criada"<< std::endl;
-}
-
-Transacao::~Transacao()
-{
-	std::cout << "Transacao apagada" << std::endl;
-}
-
-void Transacao::prox_transacao(Transacao *prox) {
-	proxima = prox;
-}
-
-int  Transacao::get_avaliacao() {
-	return avaliacao;
-}
-
-int  Transacao::get_id1() {
-	return id1;
-}
-
-int  Transacao::get_id2() {
-	return id2;
-}
-
-int Transacao::get_tipo()
-{
-	return tipo;
-}
-
-
-//FUNCOES TRANSACAO
-void adiciona_transacao(Transacao *tran) {
-	int id1 = tran->get_id1;
-	int id2 = tran->get_id2;
-	lista_transacoes[id1].push_back(*tran);
-	lista_transacoes[id2].push_back(*tran);
-}
-
-void cria_transacao(int id1, int id2,int tran,int avaliacao){
-	Transacao *nTransacao = new Transacao(id1, id2, tran, avaliacao);
-	adiciona_transacao(nTransacao);
-}
-
 //INICIALIZACOES
 void inicializa_usuarios() {
 	for (int i = 0; i < MAX_USUARIOS; i++) {
@@ -192,6 +142,8 @@ void inicializa_amizades() {
 		}
 	}
 }
+
+
 
 Usuario * retornaUsuario()
 {
@@ -213,18 +165,6 @@ Usuario * retornaUsuario()
 	return resultado;
 }
 
-
-float media_avaliacoes(int userId)
-{
-	float resultado = 0;
-	for (int i = 0; i < lista_transacoes[userId].size(); i++) {
-		resultado = lista_transacoes[userId][i].get_avaliacao();
-	}
-	if (lista_transacoes[userId].size() > 0) {
-		resultado = resultado / lista_transacoes[userId].size();
-	}
-	return resultado;
-}
 
 bool sao_amigos(int id1, int id2)
 {
@@ -251,7 +191,7 @@ Usuario * cria_usuario()
 {	//Usuario(int nIdade, char nGenero, std::string nNome,
 	//std::vector<int> nInteresses, std::string nCEP);
 	std::cout << "# Bem vindo a criacao de um novo usuario da rede" << std::endl;
-	
+
 	std::cout << "# Digite seu nome" << std::endl;
 	std::string nNome = pegaNome();
 
@@ -270,7 +210,7 @@ Usuario * cria_usuario()
 	std::cout << "# Escolha seus interesses" << std::endl;
 	std::vector<int> nInteresses = pegaInteresses();
 
-	Usuario *novoUsuario = new Usuario(nIdade,nGenero,nNome, nInteresses,nCEP,nEscolaridade);
+	Usuario *novoUsuario = new Usuario(nIdade, nGenero, nNome, nInteresses, nCEP, nEscolaridade);
 }
 
 std::string pegaNome()
@@ -314,7 +254,7 @@ char pegaGenero()
 	else if (genero == 'f') {
 		genero = 'F';
 	}
-	else if(genero != 'M' || genero != 'F'){
+	else if (genero != 'M' || genero != 'F') {
 		genero = 'O';
 	}
 	return genero;
@@ -360,7 +300,7 @@ void edita_usuario(Usuario* usuario)
 	while (mais == 's' || mais == 'S') {
 
 		int escolha = interfaceEdicao();
-		
+
 		if (escolha == 0) {
 			break;
 		}
@@ -377,7 +317,7 @@ void edita_usuario(Usuario* usuario)
 }
 
 int interfaceEdicao()
-{	
+{
 	int escolha = 0;
 	std::cout << "# Escolha a edicao a ser realizada:" << std::endl;
 	std::cout << "[1] Nome" << std::endl;
@@ -387,7 +327,7 @@ int interfaceEdicao()
 	std::cout << "[5] CEP" << std::endl;
 	std::cout << "[6] Interesses" << std::endl;
 	std::cout << "[0] Cancela" << std::endl;
-	
+
 	std::cout << ">> ";
 	std::cin >> escolha;
 
@@ -404,7 +344,7 @@ void realizaEdicao(Usuario * usuario, int escolha)
 	std::vector<int> nInteresse;
 
 	switch (escolha) {
-	case 1: 
+	case 1:
 		nNome = pegaNome();
 		usuario->set_nome(nNome);
 		break;
@@ -453,64 +393,4 @@ void exclui_usuario(Usuario* usuario)
 	}
 	else
 		std::cout << "Retornando" << std::endl;
-}
-
-void solicita_transacao()
-{
-}
-
-void cadastraTransacao()
-{
-	std::cout << "# Informe o iD do comprador" << std::endl;
-	int id1 = 0;
-	std::cout << ">> ";
-	std::cin >> id1;
-
-	std::cout << "# Informe o iD do vendedor ou prestador do servico" << std::endl;
-	int id2 = 0;
-	std::cout << ">> ";
-	std::cin >> id2;
-
-	std::cout << "# Infrome qual foi o tipo da transacao" << std::endl;
-	int tran = 0;
-	std::cout << ">> ";
-	std::cin >> tran;
-
-	std::cout << "# Infrome qual foi a avaliacao da transacao" << std::endl;
-	int avaliacao = 0;
-	std::cout << ">> ";
-	std::cin >> avaliacao;
-
-	cria_transacao(id1,id2,tran,avaliacao);
-}
-
-void excluiTransacao()
-{
-	std::cout << "# Bem vindo a exclusao de transacao" << std::endl;
-	std::cout << "# Informe o iD do usuario" << std::endl;
-	std::cout << ">> ";
-	int id = 0;
-	std::cin >> id;
-	for (int i = lista_transacoes[id].size; i > -1; i--) {
-		mostraTransacao(id,i);
-		
-		std::cout << "# Deseja excluir essa transacao ?" << std::endl;
-
-		int escolha = 0;
-		std::cout << "[1] Sim" << std::endl;
-		std::cout << "[2] Nao" << std::endl;
-		std::cout << ">> ";
-		std::cin >> escolha;
-
-		if (escolha == 1) {
-			lista_transacoes[id].erase(lista_transacoes[id].begin() + (i-1));
-		}
-	}
-	
-}
-
-void mostraTransacao(int id, int posicao)
-{
-	std::cout << "Transacao entre " + std::to_string(lista_transacoes[id][posicao]->get_id1()) + " e " + std::to_string(lista_transacoes[id][posicao]->get_id2()) << std::endl;
-	std::cout << "Do tipo " + std::to_string(lista_transacoes[id][posicao]->get_tipo()) + "com avaliacao " + std::to_string(lista_transacoes[id][posicao]->get_avaliacao()) + << std::endl
 }
