@@ -32,4 +32,6 @@ public:
 	void add_interesse(int nInteresse);
 	void delete_interesse(int nInterese);
 
+	void print_dados();
+
 };

@@ -35,6 +35,11 @@ void Usuario::delete_interesse(int nInteresse)
 	}
 }
 
+void Usuario::print_dados()
+{
+	std::cout << "Usuario: " << this->nome << " id[" << this->id << "]" << std::endl;
+}
+
 // Getters
 int Usuario::get_idade()
 {

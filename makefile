@@ -1,5 +1,5 @@
-social:
-	g++ social.cpp -c
+social: usuario
+	g++ social.cpp -c usuario.o
 
 socialt: social
 	g++ social_test.cpp social.o -o test -I../gtest/include -L.. -lgtest -lgtest_main -ftest-coverage -std=c++11
@@ -16,8 +16,8 @@ transacao:
 transacaot:
 	g++ transacao_test.cpp transacao.o -o test -I../gtest/include -L.. -lgtest -lgtest_main -ftest-coverage -std=c++11
 
-social:
-	g++ social.cpp -c
+teste: social usuario
+	g++ teste.cpp -o test social.o usuario.o
 
 clean:
 	rm -f *.o
