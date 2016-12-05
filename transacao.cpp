@@ -19,8 +19,8 @@ void Transacao::prox_transacao(Transacao *prox) {
 }
 
 void Transacao::dados_transacao(){
-	std::cout << std::endl <<"Transacao realizada entre usuario " << "[" << this->idv << "] ";
-	std::cout << "e usuario " << "[" << this->idc << "]." << std::endl;
+	std::cout << std::endl <<"Transacao realizada entre usuario " << "[" << this->id2 << "] ";
+	std::cout << "e usuario " << "[" << this->id1 << "]." << std::endl;
 	std::cout << "Tipo de transacao: ";
 	switch(this->tipo_transacao)
 	{
