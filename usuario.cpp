@@ -1,24 +1,27 @@
+#include "usuario.h"
+#include <iostream>
 #include <vector>
 #include <string>
-#include <iostream>
-#include "usuario.h"
-
+#include <algorithm>
 static int nextId = 0;
 
 
-Usuario::Usuario(int nIdade, int nId, char nGenero, std::string nNome, std::vector<int> nInteresses, std::string nCEP)
-	:idade(nIdade), id(nId),genero(nGenero), nome(nNome),interesses(nInteresses), CEP(nCEP)
+///////////////USUARIO
+
+Usuario::Usuario(int nIdade, int nId, char nGenero, std::string nNome, std::vector<int> nInteresses, std::string nCEP, int nEscolariadade)
+	:idade(nIdade), id(nId), genero(nGenero), nome(nNome), interesses(nInteresses), CEP(nCEP), escolaridade(nEscolariadade)
 {
-	std::cout << "Usuario [" + std::to_string(this->id) + "] criado" << std::endl;
+	id = nId;
+	std::cout << "Usuario [" + std::to_string(id) + "] criado" << std::endl;
 }
 
 Usuario::~Usuario() {
 	std::cout << "Usuario apagado" << std::endl;
 }
 
-void Usuario::bakuhatsu()
+void Usuario::novos_interesses(std::vector<int> nInteresses)
 {
-	delete this;
+	this->interesses = nInteresses;
 }
 
 void Usuario::add_interesse(int nInteresse)
@@ -40,265 +43,46 @@ void Usuario::delete_interesse(int nInteresse)
 	}
 }
 
-void Usuario::print_dados()
+void Usuario::mostraInteresses()
 {
-	std::cout << "Usuario: " << this->nome << " id[" << this->id << "]" << std::endl;
-}
+	std::vector<int> interesses = this->get_interesses();
 
-Usuario * retornaUsuario()
-{
-	Usuario * resultado = nullptr;
-	std::string nome;
-	std::cout << "# Digite o nome do usuario" << std::endl;
-	std::cout << ">> ";
-	std::cin >> nome;
 
-	for (int i = 0; i < MAX_USUARIOS; i++) {
-		std::string nome_rec = lista_usuarios[i]->get_nome();
-		if (nome.compare(nome_rec) == 0) {
-			resultado = lista_usuarios[i];
+	if (interesses.size() > 0) {
+		std::cout << "[+] Interesses: ";
+		for (int i = 0; i < interesses.size(); i++) {
+			switch (interesses[i])
+			{
+			case 1:
+				std::cout << "carona ";
+				break;
+			case 2:
+				std::cout << "venda ";
+				break;
+			case 3:
+				std::cout << "limpeza ";
+				break;
+			case 4:
+				std::cout << "construcao ";
+				break;
+			case 5:
+				std::cout << "pintura ";
+			default: //nao cadastrado
+				break;
+			}
+			std::cout << "." << std::endl;
+
 		}
-	}
-	if (resultado == nullptr) {
-		std::cout << "[!] Usuario nao encontrado" << std::endl;
-	}
-	return resultado;
-}
-
-
-bool sao_amigos(int id1, int id2)
-{
-	if (amizades[id1][id2] == true && amizades[id2][id1] == true) {
-		return true;
 	}
 	else {
-		return false;
+		std::cout << "[+] Interesses: Nenhum interesse cadastrado";
 	}
 }
 
-bool eh_amigo_de_amigo(int id1, int id2)
+void Usuario::bakuhatsu()
 {
-	for (int i = 0; i < MAX_USUARIOS; i++) {
-		if (sao_amigos(id1, i) && sao_amigos(id2, i)) {
-			return true;
-		}
-	}
-	return false;
-
+	delete this;
 }
-
-Usuario * cria_usuario(int id)
-{	//Usuario(int nIdade, char nGenero, std::string nNome,
-	//std::vector<int> nInteresses, std::string nCEP);
-	std::cout << "# Bem vindo a criacao de um novo usuario da rede" << std::endl;
-
-	std::cout << "# Digite seu nome" << std::endl;
-	std::string nNome = pegaNome();
-
-	std::cout << "# Digite sua idade" << std::endl;
-	int nIdade = pegaIdade();
-
-	std::cout << "# Escolha seu nivel de escolariade" << std::endl;
-	int nEscolaridade = pegaEscolaridade();
-
-	std::cout << "# Escolha seu genero" << std::endl;
-	char nGenero = pegaGenero();
-
-	std::cout << "# Digite seu CEP" << std::endl;
-	std::string nCEP = pegaCEP();
-
-	std::cout << "# Escolha seus interesses" << std::endl;
-	std::vector<int> nInteresses = pegaInteresses();
-
-	Usuario *novoUsuario = new Usuario(nIdade, nGenero, nNome, nInteresses, nCEP, nEscolaridade);
-}
-
-std::string pegaNome()
-{
-	std::string nome;
-	std::cout << ">> ";
-	std::cin >> nome;
-	return nome;
-}
-
-int pegaIdade()
-{
-	int idade = 0;
-	std::cout << ">> ";
-	std::cin >> idade;
-	return idade;
-}
-
-int pegaEscolaridade()
-{
-	int escolaridade = 0;
-	std::cout << "[1] Superior incompleto" << std::endl;
-	std::cout << "[2] Superior completo" << std::endl;
-	std::cout << ">> ";
-	std::cin >> escolaridade;
-	return escolaridade;
-}
-
-char pegaGenero()
-{
-	char genero = 'O';
-	std::cout << "[M] Masculino" << std::endl;
-	std::cout << "[F] Feminino" << std::endl;
-	std::cout << "[O] Outro" << std::endl;
-	std::cout << ">> ";
-	std::cin >> genero;
-
-	if (genero == 'm') {
-		genero = 'M';
-	}
-	else if (genero == 'f') {
-		genero = 'F';
-	}
-	else if (genero != 'M' || genero != 'F') {
-		genero = 'O';
-	}
-	return genero;
-}
-
-std::string pegaCEP()
-{
-	std::string CEP;
-	std::cout << ">> ";
-	std::cin >> CEP;
-	return CEP;
-}
-
-std::vector<int> pegaInteresses()
-{
-	std::vector<int> interesses;
-	int i = 0;
-	int temp = 0;
-	char mais = 'n';
-	std::cout << "# Escolha os seus interesses (ate 20):" << std::endl;
-	std::cout << "[1] Carona" << std::endl;
-	std::cout << "[2] Imoveis" << std::endl;
-	std::cout << "[3] Servicos" << std::endl;
-
-	while ((i < 20) && (mais == 's' || mais == 'S')) {
-		std::cout << ">> ";
-		std::cin >> temp;
-		//if temp nao esta entre as escolhas manda mensagem e i--
-		interesses.push_back(temp);
-		temp = 0;
-		i++;
-		std::cout << "# Adicionar mais interesses ? (S - sim, N - nao) ";
-		std::cout << ">> ";
-		std::cin >> mais;
-	}
-	return interesses;
-}
-
-void edita_usuario(Usuario* usuario)
-{
-	char mais = 'n';
-
-	while (mais == 's' || mais == 'S') {
-
-		int escolha = interfaceEdicao();
-
-		if (escolha == 0) {
-			break;
-		}
-
-		realizaEdicao(usuario, escolha);
-
-		std::cout << "# Realizar mais edicoes ? (S - sim, N - nao) ";
-		std::cout << ">> ";
-		std::cin >> mais;
-	}
-
-	return;
-
-}
-
-int interfaceEdicao()
-{
-	int escolha = 0;
-	std::cout << "# Escolha a edicao a ser realizada:" << std::endl;
-	std::cout << "[1] Nome" << std::endl;
-	std::cout << "[2] Idade" << std::endl;
-	std::cout << "[3] Escolaridade" << std::endl;
-	std::cout << "[4] Genero" << std::endl;
-	std::cout << "[5] CEP" << std::endl;
-	std::cout << "[6] Interesses" << std::endl;
-	std::cout << "[0] Cancela" << std::endl;
-
-	std::cout << ">> ";
-	std::cin >> escolha;
-
-	return escolha;
-}
-
-void realizaEdicao(Usuario * usuario, int escolha)
-{
-	std::string nNome;
-	int nIdade;
-	int nEscolaridade;
-	char nGenero;
-	std::string nCEP;
-	std::vector<int> nInteresse;
-
-	switch (escolha) {
-	case 1:
-		nNome = pegaNome();
-		usuario->set_nome(nNome);
-		break;
-
-	case 2:
-		nIdade = pegaIdade();
-		usuario->set_idade(nIdade);
-		break;
-
-	case 3:
-		nEscolaridade = pegaEscolaridade();
-		usuario->set_escolaridade(nEscolaridade);
-		break;
-
-	case 4:
-		nGenero = pegaGenero();
-		usuario->set_genero(nGenero);
-		break;
-
-	case 5:
-		nCEP = pegaCEP();
-		usuario->set_cep(nCEP);
-		break;
-
-	case 6:
-		nInteresse = pegaInteresses();
-		usuario->novos_interesses(nInteresse);
-		break;
-
-	default: break;
-	}
-}
-
-void exclui_usuario(Usuario* usuario)
-{
-	std::cout << "# Usuario sera excluido, deseja continuar ?" << std::endl;
-	int escolha = 0;
-	std::cout << "[1] Sim" << std::endl;
-	std::cout << "[2] Nao" << std::endl;
-	std::cout << ">> ";
-	std::cin >> escolha;
-
-	if (escolha == 1) {
-		usuario->bakuhatsu();
-		std::cout << "Sucesso, retornando" << std::endl;
-	}
-	else
-		std::cout << "Retornando" << std::endl;
-}
-
-
-
-
-
 
 // Getters
 int Usuario::get_idade()
@@ -331,6 +115,11 @@ std::string Usuario::get_CEP()
 	return this->CEP;
 }
 
+int Usuario::get_escolaridade()
+{
+	return this->escolaridade;
+}
+
 
 // Setters
 void Usuario::set_idade(int nova_idade)
@@ -343,6 +132,11 @@ void Usuario::set_genero(char novo_genero)
 	this->genero = novo_genero;
 }
 
+void Usuario::set_escolaridade(int nova_escolaridade)
+{
+	this->escolaridade = nova_escolaridade;
+}
+
 void Usuario::set_nome(std::string novo_nome)
 {
 	this->nome = novo_nome;
@@ -352,5 +146,43 @@ void Usuario::set_cep(std::string novo_cep)
 {
 	this->CEP = novo_cep;
 }
+
+
+void exclui_usuario(Usuario* usuario)
+{
+	std::cout << "# Usuario sera excluido, deseja continuar ?" << std::endl;
+	int escolha = 0;
+	std::cout << "[1] Sim" << std::endl;
+	std::cout << "[2] Nao" << std::endl;
+	std::cout << ">> ";
+	std::cin >> escolha;
+
+	if (escolha == 1) {
+		usuario->bakuhatsu();
+		std::cout << "Sucesso, retornando" << std::endl;
+	}
+	else
+		std::cout << "Retornando" << std::endl;
+}
+
+void Usuario::print_dados()
+{
+	std::cout << "Usuario: " << this->nome << " id[" << this->id << "]" << std::endl;
+}
+
+
+void Usuario::mostraEscolaridade()
+{
+	int esc = this->get_escolaridade();
+
+	switch (esc)
+	{
+	case 1: std::cout << "[+] Escolaridade: Superior incompleto" << std::endl;
+	case 2: std::cout << "[+] Escolaridade: Superior completo" << std::endl;
+	default: std::cout << "[+] Escolaridade nao cadastrada" << std::endl;
+		break;
+	}
+}
+
 
 
