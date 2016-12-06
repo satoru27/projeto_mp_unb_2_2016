@@ -82,6 +82,10 @@ public:
 
 	void bakuhatsu();
 
+	//adicionado 15h
+	void mostraEscolaridade();
+	void mostraInteresses();
+
 };
 
 

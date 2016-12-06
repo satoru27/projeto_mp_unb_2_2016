@@ -38,6 +38,7 @@ int Social::get_novo_id()
 	return -1;
 }
 
+//adm
 void Social::cria_amizade(int id1, int id2)
 {
 	amizades[id1][id2] = true;
@@ -53,6 +54,36 @@ void Social::print_lista_usuarios()
 			lista_usuarios[i]->print_dados();
 		}
 	}
+}
+//adicionado 14h
+void Social::modificaAmizade(int id1, int id2)
+{
+	int escolha = 0;
+	do {
+
+		std::cout << "# Escolha o que deseja fazer: " << std::endl;
+		std::cout << "[1] Adicionar amizade" << std::endl;
+		std::cout << "[2] Remover amizade" << std::endl;
+		std::cout << "[0] Sair" << std::endl;
+
+		std::cout << ">> ";
+		std::cin >> escolha;
+
+		switch (escolha) {
+		case 1: amizades[id1][id2] = true;
+			std::cout << "# Adicionado" << std::endl;
+			break;
+		case 2: amizades[id1][id2] = false;
+			std::cout << "# Removido" << std::endl;
+			break;
+		default:std::cout << "# Saindo" << std::endl;
+			break;
+		}
+
+	} while (escolha == 1 || escolha == 2);
+
+	
+	
 }
 
 bool Social::sao_amigos(int id1, int id2)
@@ -120,7 +151,7 @@ void Social::interface_usuario()
 			break;
 		case 2: edita_usuario(user);
 			break;
-		case 3: //modifica_amizade(id1,id2)
+		case 3: modificaAmizade(id1, id2);
 			break;
 		case 4: exclui_usuario(user);
 			break;
@@ -159,7 +190,7 @@ void Social::interface_adm()
 			break;
 		case 3: excluiTransacao();
 			break;
-		case 4: //historico geral
+		case 4: historicoGeral();
 		default:
 			break;
 		}
@@ -376,6 +407,73 @@ float Social::media_avaliacoes(int userId)
 		resultado = resultado / lista_transacoes[userId].size();
 	}
 	return resultado;
+}
+void Social::mostraRede()
+{
+	int escolha = 0;
+	do {
+
+		std::cout << "# Digite o id de usuario a ser verificado" << std::endl;
+		std::cout << ">> ";
+		int id=-1;
+		std::cin >> id;
+
+		Usuario * user = get_usuario_by_id(id);
+
+		if (id < 0 || id > MAX_USUARIOS || user == nullptr) {
+			std::cout << "# ID invalido ou usuario inexistente" << std::endl;
+		}	
+
+		//mostra usuario
+		mostraUsuario(user);
+		mostraAmizades(user);
+
+
+		std::cout << "[0] Sair" << std::endl;
+
+	} while (escolha == 1 || escolha == 2 || escolha == 3 || escolha == 4);
+}
+void Social::mostraUsuario(Usuario * user)
+{
+
+	std::cout << "[+] Nome : " + user->get_nome << std::endl;
+	std::cout << "[+] Idade : " + std::to_string(user->get_idade()) << std::endl;
+	std::cout << "[+] Genero :" + user->get_genero() << std::endl;
+	user->mostraEscolaridade();
+	user->mostraInteresses();
+	std::cout << "[+] CEP :" + user->get_CEP << std::endl;
+}
+void Social::mostraAmizades(Usuario * user)
+{
+	std::cout << "# Amizades do usuario : "<< std::endl;
+	int id = user->get_id();
+	for (int i = 0; i < MAX_USUARIOS; i++) {
+		if (amizades[id][i] && amizades[i][id]) {
+			std::cout << "[*] O usuario e amigo de : iD = " + std::to_string(i) << std::endl;
+		}
+		else {
+			if (amizades[id][i]) {
+				std::cout << "[*] Enviou solicitacao de amizade para : iD = " + std::to_string(i) << std::endl;
+			}
+			if (amizades[i][id]) {
+				std::cout << "[*] Recebeu solicitacao de amizade de : iD = " + std::to_string(i) << std::endl;
+			}
+		}
+
+	}
+}
+//adicionado 14h
+void Social::historicoGeral()
+{
+	for (int i = 0; i < MAX_USUARIOS; i++) {
+		int tamanho = lista_transacoes[i].size();
+
+		if (tamanho != 0) {
+			for (int j = 0; j < tamanho; j++) {
+				lista_transacoes[i][j]->dados_transacao;
+			}
+		}
+	}
 }
 
 Usuario * Social::get_usuario_by_id(int id)

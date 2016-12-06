@@ -105,6 +105,8 @@ public:
 	Usuario* retornaUsuario();
 	void print_lista_usuarios();
 
+	//adicionado 14h
+	void modificaAmizade(int id1, int id2);
 
 	//adm transacao
 	void cria_transacao();
@@ -113,10 +115,18 @@ public:
 	//user transacao
 	float media_avaliacoes(int userID);
 	
+
 	void solicita_transacao();//
 
 	//adm 
-	//void visualizaPessoas();
+	void mostraRede();
+	//auxiliares mostra REDE
+	void mostraUsuario(Usuario * user);
+	void mostraAmizades(Usuario * user);
+
+
+	//adicionado 14h
+	void historicoGeral();
 };
 
 
@@ -134,6 +144,3 @@ int pegaEscolaridade();
 char pegaGenero();
 std::string pegaCEP();
 std::vector<int> pegaInteresses();
-
-
-//funcoes auxiliares solicita_transacao

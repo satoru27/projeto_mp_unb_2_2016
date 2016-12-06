@@ -48,6 +48,55 @@ void Usuario::bakuhatsu()
 	delete this;
 }
 
+void Usuario::mostraEscolaridade()
+{
+	int esc = this->get_escolaridade;
+
+	switch (esc)
+	{
+	case 1: std::cout << "[+] Escolaridade: Superior incompleto" << std::endl;
+	case 2: std::cout << "[+] Escolaridade: Superior completo" << std::endl;
+	default: std::cout << "[+] Escolaridade nao cadastrada" << std::endl;
+		break;
+	}
+}
+
+void Usuario::mostraInteresses()
+{
+	std::vector<int> interesses = this->get_interesses();
+
+
+	if (interesses.size() > 0) {
+		std::cout << "[+] Interesses: ";
+		for (int i = 0; i < interesses.size(); i++) {
+			switch (interesses[i])
+			{
+			case 1:
+				std::cout << "carona ";
+				break;
+			case 2:
+				std::cout << "venda ";
+				break;
+			case 3:
+				std::cout << "limpeza ";
+				break;
+			case 4:
+				std::cout << "construcao ";
+				break;
+			case 5:
+				std::cout << "pintura ";
+			default: //nao cadastrado
+				break;
+			}
+			std::cout << "." << std::endl;
+
+		}
+	}
+	else {
+		std::cout << "[+] Interesses: Nenhum interesse cadastrado";
+	}
+}
+
 // Getters
 int Usuario::get_idade()
 {
