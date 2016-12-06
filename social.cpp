@@ -46,13 +46,219 @@ void Social::cria_amizade(int id1, int id2)
 
 void Social::print_lista_usuarios()
 {
-	for(int i = 0; i < MAX_USUARIOS; i++)
+	for (int i = 0; i < MAX_USUARIOS; i++)
 	{
-		if(lista_usuarios[i] != nullptr)
+		if (lista_usuarios[i] != nullptr)
 		{
 			lista_usuarios[i]->print_dados();
 		}
 	}
+}
+
+bool Social::sao_amigos(int id1, int id2)
+{
+	if (amizades[id1][id2] == true && amizades[id2][id1] == true) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+bool Social::eh_amigo_de_amigo(int id1, int id2)
+{
+	for (int i = 0; i < MAX_USUARIOS; i++) {
+		if (sao_amigos(id1, i) && sao_amigos(id2, i)) {
+			return true;
+		}
+	}
+	return false;
+}
+
+
+void Social::edita_usuario(Usuario * usuario)
+{
+	char mais = 'n';
+
+	while (mais == 's' || mais == 'S') {
+
+		int escolha = interfaceEdicao();
+
+		if (escolha == 0) {
+			break;
+		}
+
+		realizaEdicao(usuario, escolha);
+
+		std::cout << "# Realizar mais edicoes ? (S - sim, N - nao) ";
+		std::cout << ">> ";
+		std::cin >> mais;
+	}
+
+	return;
+
+}
+
+int Social::interfaceEdicao()
+{
+	int escolha = 0;
+	std::cout << "# Escolha a edicao a ser realizada:" << std::endl;
+	std::cout << "[1] Nome" << std::endl;
+	std::cout << "[2] Idade" << std::endl;
+	std::cout << "[3] Escolaridade" << std::endl;
+	std::cout << "[4] Genero" << std::endl;
+	std::cout << "[5] CEP" << std::endl;
+	std::cout << "[6] Interesses" << std::endl;
+	std::cout << "[0] Cancela" << std::endl;
+
+	std::cout << ">> ";
+	std::cin >> escolha;
+
+	return escolha;
+}
+
+void Social::realizaEdicao(Usuario * usuario, int escolha)
+{
+	std::string nNome;
+	int nIdade;
+	int nEscolaridade;
+	char nGenero;
+	std::string nCEP;
+	std::vector<int> nInteresse;
+
+	switch (escolha) {
+	case 1:
+		nNome = pegaNome();
+		usuario->set_nome(nNome);
+		break;
+
+	case 2:
+		nIdade = pegaIdade();
+		usuario->set_idade(nIdade);
+		break;
+
+	case 3:
+		nEscolaridade = pegaEscolaridade();
+		usuario->set_escolaridade(nEscolaridade);
+		break;
+
+	case 4:
+		nGenero = pegaGenero();
+		usuario->set_genero(nGenero);
+		break;
+
+	case 5:
+		nCEP = pegaCEP();
+		usuario->set_cep(nCEP);
+		break;
+
+	case 6:
+		nInteresse = pegaInteresses();
+		usuario->novos_interesses(nInteresse);
+		break;
+
+	default: break;
+	}
+}
+
+void Social::exclui_usuario(Usuario * usuario)
+{
+	std::cout << "# Usuario sera excluido, deseja continuar ?" << std::endl;
+	int escolha = 0;
+	std::cout << "[1] Sim" << std::endl;
+	std::cout << "[2] Nao" << std::endl;
+	std::cout << ">> ";
+	std::cin >> escolha;
+
+	if (escolha == 1) {
+		usuario->bakuhatsu();
+		std::cout << "Sucesso, retornando" << std::endl;
+	}
+	else
+		std::cout << "Retornando" << std::endl;
+}
+
+Usuario * Social::retornaUsuario()
+{
+		Usuario * resultado = nullptr;
+		std::string nome;
+		std::cout << "# Digite o nome do usuario" << std::endl;
+		std::cout << ">> ";
+		std::cin >> nome;
+
+		for (int i = 0; i < MAX_USUARIOS; i++) {
+			std::string nome_rec = lista_usuarios[i]->get_nome();
+			if (nome.compare(nome_rec) == 0) {
+				resultado = lista_usuarios[i];
+			}
+		}
+		if (resultado == nullptr) {
+			std::cout << "[!] Usuario nao encontrado" << std::endl;
+		}
+		return resultado;
+	}
+
+void Social::cria_transacao()
+{
+	std::cout << "# Informe o iD do comprador" << std::endl;
+	int id1 = 0;
+	std::cout << ">> ";
+	std::cin >> id1;
+
+	std::cout << "# Informe o iD do vendedor ou prestador do servico" << std::endl;
+	int id2 = 0;
+	std::cout << ">> ";
+	std::cin >> id2;
+
+	std::cout << "# Infrome qual foi o tipo da transacao" << std::endl;
+	int tipo = 0;
+	std::cout << ">> ";
+	std::cin >> tipo;
+
+	std::cout << "# Infrome qual foi a avaliacao da transacao" << std::endl;
+	int avaliacao = 0;
+	std::cout << ">> ";
+	std::cin >> avaliacao;
+
+	Transacao* tran = new Transacao(id1, id2, avaliacao, tipo);
+	lista_transacoes[id1].push_back(tran);
+	lista_transacoes[id2].push_back(tran);
+}
+
+void Social::excluiTransacao()
+{
+	std::cout << "# Bem vindo a exclusao de transacao" << std::endl;
+	std::cout << "# Informe o iD do usuario" << std::endl;
+	std::cout << ">> ";
+	int id = 0;
+	std::cin >> id;
+	for (int i = lista_transacoes[id].size; i > -1; i--) {
+		lista_transacoes[id][i]->dados_transacao();
+
+		std::cout << "# Deseja excluir essa transacao ?" << std::endl;
+
+		int escolha = 0;
+		std::cout << "[1] Sim" << std::endl;
+		std::cout << "[2] Nao" << std::endl;
+		std::cout << ">> ";
+		std::cin >> escolha;
+
+		if (escolha == 1) {
+			lista_transacoes[id].erase(lista_transacoes[id].begin() + (i - 1));
+		}
+	}
+}
+
+float Social::media_avaliacoes(int userId)
+{
+	float resultado = 0;
+	for (int i = 0; i < lista_transacoes[userId].size(); i++) {
+		resultado += lista_transacoes[userId][i]->get_avaliacao();
+	}
+	if (lista_transacoes[userId].size() > 0) {
+		resultado = resultado / lista_transacoes[userId].size();
+	}
+	return resultado;
 }
 
 Usuario * Social::get_usuario_by_id(int id)
