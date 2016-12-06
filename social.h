@@ -49,7 +49,7 @@ public:
 	/*************************************************************************** 
 	* Metodo: Cria amizade
 	* Descrição
-	* 	Cria uma amizade entre o usuario do id1 e id2. A amizade deve ser
+	* 	Cria uma amizade (adm) entre o usuario do id1 e id2. A amizade deve ser
 	*	bidirecional na matriz de amizades
 	* Assertivas de entrada
 	* 	id1 e id2 devem ser ids validos.

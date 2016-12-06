@@ -579,10 +579,12 @@ std::vector<int> pegaInteresses()
 	char mais = 'n';
 	std::cout << "# Escolha os seus interesses (ate 20):" << std::endl;
 	std::cout << "[1] Carona" << std::endl;
-	std::cout << "[2] Imoveis" << std::endl;
-	std::cout << "[3] Servicos" << std::endl;
+	std::cout << "[2] Venda" << std::endl;
+	std::cout << "[3] Limpeza" << std::endl;
+	std::cout << "[4] Construcao" << std::endl;
+	std::cout << "[5] Pintura" << std::endl;
 
-	while ((i < 20) && (mais == 's' || mais == 'S')) {
+	do{
 		std::cout << ">> ";
 		std::cin >> temp;
 		//if temp nao esta entre as escolhas manda mensagem e i--
@@ -592,7 +594,7 @@ std::vector<int> pegaInteresses()
 		std::cout << "# Adicionar mais interesses ? (S - sim, N - nao) ";
 		std::cout << ">> ";
 		std::cin >> mais;
-	}
+	} while ((i < 20) && (mais == 's' || mais == 'S'));
 	return interesses;
 }
 
