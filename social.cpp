@@ -47,6 +47,10 @@ void Social::cria_amizade(int id1, int id2)
 	amizades[id1][id2] = true;
 }
 
+
+/*
+	* No social tem uma funcao que cria o usuario
+*/
 void Social::cria_usuario()
 {
 
@@ -65,9 +69,9 @@ void Social::cria_usuario()
 	std::cout << ">> Qual o CEP? ";
 	std::cin >> cep;
 	std::cin.ignore(1000,'\n'); // Limpa buffer
-	int novo_id = get_novo_id();
+	int novo_id = get_novo_id(); // Ai cria o novo id aqui e passa pro construtor do usuario
 	Usuario *a = new Usuario(idade, novo_id, genero, nome, interesses ,cep);
-	lista_usuarios[novo_id] = a;
+	lista_usuarios[novo_id] = a; // Tem que colocar o usuario na lista aqui
 }
 
 void Social::print_lista_usuarios()
