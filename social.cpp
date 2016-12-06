@@ -1,4 +1,4 @@
-#include "social.h"
+﻿#include "social.h"
 #include <iostream>
 #include <vector>
 #include <string>
@@ -75,7 +75,124 @@ bool Social::eh_amigo_de_amigo(int id1, int id2)
 	return false;
 }
 
+/////mudancas 06/12 01:29
+void Social::interface_usuario()
+{
+	int escolha = 0;
+	do {
 
+		std::cout << "# Escolha o que deseja fazer: " << std::endl;
+		std::cout << "[1] Criar um usuario" << std::endl;
+		std::cout << "[2] Editar um usuario ja existente" << std::endl;
+		std::cout << "[3] Editar amizades" << std::endl;
+		std::cout << "[4] Excluir um usuario ja existente" << std::endl;
+		std::cout << "[5] Solicitar uma nova transacao" << std::endl;
+		std::cout << "[6] Aceitar ou rejeitar transacoes" << std::endl;
+		std::cout << "[7] Ver historico de transacoes" << std::endl;
+		std::cout << "[0] Sair" << std::endl;
+
+		std::cout << ">> ";
+		std::cin >> escolha;
+
+		Usuario * user = nullptr;
+		Usuario * user2 = nullptr;
+		int id1 = -1;
+		int id2 = -1;
+
+		if (escolha == 2 || escolha == 4 || escolha == 5 || escolha == 6 || escolha == 7) {
+			user = retornaUsuario();
+		}
+		if (escolha == 3) {
+			user = retornaUsuario();
+			std::cout << "# Usuario com que deseja editar amizade: " << std::endl;
+			user2 = retornaUsuario();
+			id1 = user->get_id();
+			id2 = user2->get_id();
+		}
+		
+		if (user == nullptr || ((user2 == nullptr) && (escolha == 3))) {
+			std::cout << "# Usuario nao cadastrado. Saindo. " << std::endl;
+			escolha = 0;
+		}
+
+		switch (escolha) {
+		case 1: interface_usuario();
+			break;
+		case 2: edita_usuario(user);
+			break;
+		case 3: //modifica_amizade(id1,id2)
+			break;
+		case 4: exclui_usuario(user);
+			break;
+		case 5: //solicita_transacao(user)
+			break;
+		case 6: //aceita_solicitacao(user)
+			break;
+		case 7: //historico_transacoes(user)
+			break;
+		default:
+			break;
+		}
+
+	} while (escolha == 1 || escolha == 2 || escolha == 3 || escolha == 4 || escolha == 5 || escolha == 6 || escolha == 7);
+}
+
+void Social::interface_adm()
+{
+	int escolha = 0;
+	do {
+
+		std::cout << "# Escolha o que deseja fazer: " << std::endl;
+		std::cout << "[1] Mostrar a rede social" << std::endl;
+		std::cout << "[2] Cadastrar transacao" << std::endl;
+		std::cout << "[3] Decadastrar transacao" << std::endl;
+		std::cout << "[4] Olhar historico de transacoes" << std::endl;
+		std::cout << "[0] Sair" << std::endl;
+
+		std::cout << ">> ";
+		std::cin >> escolha;
+
+		switch (escolha) {
+		case 1: //mostrar_rede()
+			break;
+		case 2: cria_transacao();
+			break;
+		case 3: excluiTransacao();
+			break;
+		case 4: //historico geral
+		default:
+			break;
+		}
+
+	} while (escolha == 1 || escolha == 2 || escolha == 3 || escolha == 4);
+}
+
+void Social::interface_geral()
+{
+	int escolha = 0;
+	do {
+
+		std::cout << "# Escolha a interface desejada " << std::endl;
+		std::cout << "[1] Usuario" << std::endl;
+		std::cout << "[2] Administrador" << std::endl;
+		std::cout << "[0] Sair" << std::endl;
+
+		std::cout << ">> ";
+		std::cin >> escolha;
+
+		switch (escolha) {
+		case 1: interface_usuario();
+			break;
+		case 2: interface_adm();
+			break;
+
+		default:
+			break;
+		}
+
+	} while (escolha == 1 || escolha == 2);
+}
+/////fim mudancas 06/12 01:29
 void Social::edita_usuario(Usuario * usuario)
 {
 	char mais = 'n';
