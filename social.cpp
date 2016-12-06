@@ -228,7 +228,7 @@ void Social::edita_usuario(Usuario * usuario)
 {
 	char mais = 'n';
 
-	while (mais == 's' || mais == 'S') {
+	do{
 
 		int escolha = interfaceEdicao();
 
@@ -241,7 +241,8 @@ void Social::edita_usuario(Usuario * usuario)
 		std::cout << "# Realizar mais edicoes ? (S - sim, N - nao) ";
 		std::cout << ">> ";
 		std::cin >> mais;
-	}
+
+	} while (mais == 's' || mais == 'S');
 
 	return;
 
@@ -319,6 +320,10 @@ void Social::exclui_usuario(Usuario * usuario)
 	std::cin >> escolha;
 
 	if (escolha == 1) {
+		for (int i = 0; i < MAX_USUARIOS; i++) {
+			amizades[usuario->get_id()][i] = false;
+			amizades[i][usuario->get_id()] = false;
+		}
 		usuario->bakuhatsu();
 		std::cout << "Sucesso, retornando" << std::endl;
 	}
@@ -470,7 +475,7 @@ void Social::historicoGeral()
 
 		if (tamanho != 0) {
 			for (int j = 0; j < tamanho; j++) {
-				lista_transacoes[i][j]->dados_transacao;
+				lista_transacoes[i][j]->dados_transacao();
 			}
 		}
 	}

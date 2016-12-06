@@ -43,6 +43,15 @@ public:
 	Usuario(int nIdade, int nId, char nGenero, std::string nNome, std::vector<int> nInteresses, std::string nCEP, int nEscolaridade);
 	~Usuario();
 
+	/***************************************************************************
+	* Métodos: get_[valor]
+	* Descrição
+	* 	As seguintes métodos devolvem as respectivas informações dos atributos
+	*	do objeto
+	* Assertivas de saida
+	*	Retornam um valor valido do Usuario
+	***************************************************************************/
+
 	// Getters
 	int get_idade();
 	int get_id();
@@ -52,8 +61,23 @@ public:
 	std::vector<int> get_interesses();
 	std::string get_CEP();
 
+	/***************************************************************************
+	* Métodos: get_[valor]
+	* Descrição
+	* 	Os seguintes métodos devolvem as respectivas informações dos atributos
+	*	do objeto
+	* Assertivas de saida
+	*	Retornam um valor valido do Usuario
+	***************************************************************************/
 	void print_dados();
 
+	/***************************************************************************
+	* Métodos: set_[valor]
+	* Descrição
+	* 	As seguintes métodos definem os atributos do objeto com um respectivo valor
+	* Assertivas de entrada
+	*	As entradas são válidas para os respectivos atributos do objeto
+	***************************************************************************/
 	// Setters
 	void set_idade(int nova_idade);
 	void set_genero(char novo_genero);
@@ -80,10 +104,27 @@ public:
 	***************************************************************************/
 	void delete_interesse(int nInterese);
 
+	/***************************************************************************
+	* Metodo: Apaga objeto
+	* Descrição
+	* 	Utilizado para deletar manualmente o prório objeto
+	***************************************************************************/
 	void bakuhatsu();
 
 	//adicionado 15h
+	/***************************************************************************
+	* Metodo: Mostra escolaridade do Usuario
+	* Descrição
+	* 	Imprime na tela a escolaridade do Usuario, a partir do atributo
+	*	escolaridade do usuario é mostrado na tela a descrição correspondente
+	***************************************************************************/
 	void mostraEscolaridade();
+	/***************************************************************************
+	* Metodo: Mostra interesses do Usuario
+	* Descrição
+	* 	Imprime na tela os interesses do Usuario, a partir do atributo interesses
+	*	do usuario é mostrado na tela a descrição correspondente desses interesses.
+	***************************************************************************/
 	void mostraInteresses();
 
 };
