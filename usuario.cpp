@@ -8,27 +8,23 @@ static int nextId = 0;
 
 ///////////////USUARIO
 int novo_id() {
-	int nId = 0;
-	if (lista_usuarios[0] == nullptr) {
-		nId = 0;
-	}
-	else {
-		for (int i = 0; i < MAX_USUARIOS - 1; i++) {
-
-			if (lista_usuarios[i] != nullptr && lista_usuarios[i + 1] == nullptr) {
-				nId = i + 1;
-				break;
-			}
+	for(int i = 0; i < MAX_USUARIOS;i++)
+	{
+		if(lista_usuarios[i] == nullptr)
+		{
+			return i;
 		}
 	}
-	return nId;
+	return -1; // Nao existem mais posicoes vazias
 }
 
 Usuario::Usuario(int nIdade, char nGenero, std::string nNome, std::vector<int> nInteresses, std::string nCEP, int nEscolariadade)
 	:idade(nIdade), genero(nGenero), nome(nNome), interesses(nInteresses), CEP(nCEP), escolaridade(nEscolariadade)
 {
 	id = novo_id();
+	lista_usuarios[id] = a;
 	std::cout << "Usuario [" + std::to_string(id) + "] criado" << std::endl;
+	
 }
 
 Usuario::~Usuario() {
