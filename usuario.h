@@ -1,5 +1,8 @@
 #pragma once
 #include <vector>
+#include <string>
+#include "social.h"
+
 const int MAX_USUARIOS = 100;
 
 class Usuario
@@ -17,7 +20,7 @@ private:
 
 
 public:
-	Usuario(int nIdade, char nGenero, std::string nNome, std::vector<int> nInteresses, std::string nCEP, int nEscolaridade);
+	Usuario(int nIdade, int nId, char nGenero, std::string nNome, std::vector<int> nInteresses, std::string nCEP, int nEscolaridade);
 	~Usuario();
 
 	// Getters
@@ -28,6 +31,9 @@ public:
 	std::string get_nome();
 	std::vector<int> get_interesses();
 	std::string get_CEP();
+
+	void print_dados();
+	void print_lista_usuarios();
 
 	// Setters
 	void set_idade(int nova_idade);
@@ -58,7 +64,7 @@ bool eh_amigo_de_amigo(int id1, int id2);
 
 
 //INTERFACE USUARIO
-
+/* 
 Usuario* cria_usuario();
 //funcoes auxiliares cria usuario
 std::string pegaNome();
@@ -67,13 +73,13 @@ int pegaEscolaridade();
 char pegaGenero();
 std::string pegaCEP();
 std::vector<int> pegaInteresses();
-
+*/
 
 
 void edita_usuario(Usuario* usuario);
 //funcoes auxiliares edita usuario
-	int interfaceEdicao();
-	void realizaEdicao(Usuario* usuario, int escolha);
+int interfaceEdicao();
+void realizaEdicao(Usuario* usuario, int escolha);
 
 
 void exclui_usuario(Usuario* usuario);
